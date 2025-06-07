@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  whatsapp-foto:
+    image: node:18
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    ports:
+      - target: 3000
+        published: 3000
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: ./session
+        target: /app/session
+      - type: bind
+        source: ./index.js
+        target: /app/index.js
+      - type: bind
+        source: ./package.json
+        target: /app/package.json
+    command: sh -c "npm install && node index.js"
